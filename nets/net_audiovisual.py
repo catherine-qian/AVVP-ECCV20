@@ -104,13 +104,16 @@ class MMIL_Net(nn.Module):
     def forward(self, audio, visual, visual_st):
 
         x1 = self.fc_a(audio)
-
+        
         # 2d and 3d visual feature fusion
         vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1)
         vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)
         vid_st = self.fc_st(visual_st)
         x2 = torch.cat((vid_s, vid_st), dim =-1)
         x2 = self.fc_fusion(x2)
+        
+        print(x1.size())
+        print(x2.size())
 
         # HAN
         x1, x2 = self.hat_encoder(x1, x2)

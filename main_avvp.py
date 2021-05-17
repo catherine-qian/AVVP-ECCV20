@@ -7,6 +7,15 @@ from dataloader import *
 from nets.net_audiovisual import MMIL_Net
 from utils.eval_metrics import segment_level, event_level
 import pandas as pd
+import random 
+
+def set_random_seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    print("set random seed as {}".format(seed))
+    os.environ['PYTHONHASHSEED'] = str(seed)
 
 def train(args, model, train_loader, optimizer, criterion, epoch):
     model.train()
@@ -192,7 +201,7 @@ def main():
     args = parser.parse_args()
 
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    torch.manual_seed(args.seed)
+    #torch.manual_seed(args.seed)
 
     if args.model == 'MMIL_Net':
         model = MMIL_Net().to('cuda')
@@ -232,4 +241,5 @@ def main():
         model.load_state_dict(torch.load(args.model_save_dir + args.checkpoint + ".pt"))
         eval(model, test_loader, args.label_test)
 if __name__ == '__main__':
+    set_random_seed(10)
     main()
