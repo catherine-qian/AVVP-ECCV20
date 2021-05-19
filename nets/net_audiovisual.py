@@ -104,9 +104,9 @@ class MMIL_Net(nn.Module):
         self.cmt_encoder = Encoder(CMTLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
         self.hat_encoder = Encoder(HANLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
 
-        self.nlayer=3
-        self.avtransformer1 = nn.Transformer(num_encoder_layers=self.nlayer, num_decoder_layers=self.nlayer, dropout=0.3)
-        self.avtransformer2 = nn.Transformer(num_encoder_layers=self.nlayer, num_decoder_layers=self.nlayer, dropout=0.3)
+        # self.nlayer=3
+        # self.avtransformer1 = nn.Transformer(num_encoder_layers=self.nlayer, num_decoder_layers=self.nlayer, dropout=0.3)
+        # self.avtransformer2 = nn.Transformer(num_encoder_layers=self.nlayer, num_decoder_layers=self.nlayer, dropout=0.3)
 
     def forward(self, audio, visual, visual_st):
         # audio ([16, 10, 128]), visual ([16, 80, 2048]), visual_st ([16, 10, 512])
@@ -129,9 +129,9 @@ class MMIL_Net(nn.Module):
         # Fusion
 
         # HAN
-        # x1, x2 = self.hat_encoder(x1, x2) # ([16, 10, 512]), ([16, 10, 512])
+        x1, x2 = self.hat_encoder(x1, x2) # ([16, 10, 512]), ([16, 10, 512])
 
-        x1, x2 = self.avtransformer1(x1.transpose(0, 1), x2.transpose(0, 1)).transpose(0,1), self.avtransformer2(x2.transpose(0, 1), x1.transpose(0, 1)).transpose(0,1)
+        # x1, x2 = self.avtransformer1(x1.transpose(0, 1), x2.transpose(0, 1)).transpose(0,1), self.avtransformer2(x2.transpose(0, 1), x1.transpose(0, 1)).transpose(0,1)
 
         # prediction
         x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2) # ([16, 10, 2, 512]) audio-visual aggregated features

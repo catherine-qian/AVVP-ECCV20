@@ -17,7 +17,7 @@ def set_random_seed(seed):
     print("set random seed as {}".format(seed))
     os.environ['PYTHONHASHSEED'] = str(seed)
 
-def train(args, model, train_loader, optimizer, criterion, epoch):
+def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
     model.train()
     for batch_idx, sample in enumerate(train_loader):
         audio, video, video_st, target = sample['audio'].to(args.device), sample['video_s'].to(args.device), sample['video_st'].to(args.device), sample['label'].type(torch.FloatTensor).to(args.device)
@@ -40,7 +40,10 @@ def train(args, model, train_loader, optimizer, criterion, epoch):
         Pv = v * target + (1 - v) * 0.5
 
         # individual guided learning
-        loss =  criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target) # target ([16, 25])
+        loss = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)  # target ([16, 25])
+
+        if criterion2 is not None: # not empty
+            loss = loss + criterion2(target, output, output[torch.randint(0, 16, (16,)), :])  # + contrastive loss
 
         loss.backward()
         optimizer.step()
@@ -235,9 +238,11 @@ def main():
         optimizer = optim.Adam(model.parameters(), lr=args.lr)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
         criterion = nn.BCELoss()
+        criterion2 = nn.TripletMarginLoss(margin=1.0, p=2) # contrastive loss
+
         best_F = 0
         for epoch in range(1, args.epochs + 1):
-            train(args, model, train_loader, optimizer, criterion, epoch=epoch)
+            train(args, model, train_loader, optimizer, criterion, epoch=epoch, criterion2=criterion2)
             scheduler.step(epoch)
             F = eval(model, val_loader, args.label_val, epoch)
             if F >= best_F:
