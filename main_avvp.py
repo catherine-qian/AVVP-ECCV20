@@ -225,7 +225,6 @@ def main():
     #torch.manual_seed(args.seed)
     args.device=torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
 
-
     if args.model == 'MMIL_Net':
         model = MMIL_Net().to(args.device)
     else:

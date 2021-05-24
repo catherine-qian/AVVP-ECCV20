@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="qian@172.16.31.38:22 password" remoteFilesAllowedToDisappearOnAutoupload="false" autoUploadExternalChanges="true">
-    <serverData>
-      <paths name="qian@172.16.31.38:22 password">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/home/qian/Documents/AVVP-ECCV20" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-    </serverData>
+  <component name="PublishConfigData" autoUpload="Always" serverName="qian@172.16.31.38:22 password">
     <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

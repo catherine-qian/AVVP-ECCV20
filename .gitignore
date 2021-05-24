@@ -5,3 +5,5 @@ log/
 *.pyc
 **/*.pyc
 models/*
+**/**/*.pyc
+
