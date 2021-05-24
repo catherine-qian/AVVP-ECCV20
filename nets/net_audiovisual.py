@@ -5,9 +5,12 @@ from torch.autograd import Variable
 import numpy
 import copy
 import math
+import random
+
 
 def _get_clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for i in range(N)])
+
 
 class Encoder(nn.Module):
 
@@ -25,7 +28,7 @@ class Encoder(nn.Module):
 
         for i in range(self.num_layers):
             output_a = self.layers[i](src_a, src_v, src_mask=mask,
-                                    src_key_padding_mask=src_key_padding_mask)
+                                      src_key_padding_mask=src_key_padding_mask)
             output_v = self.layers[i](src_v, src_a, src_mask=mask,
                                       src_key_padding_mask=src_key_padding_mask)
 
@@ -34,6 +37,7 @@ class Encoder(nn.Module):
             output_v = self.norm2(output_v)
 
         return output_a, output_v
+
 
 class HANLayer(nn.Module):
 
@@ -69,7 +73,7 @@ class HANLayer(nn.Module):
         src_q = src_q.permute(1, 0, 2)
         src_v = src_v.permute(1, 0, 2)
         src1 = self.cm_attn(src_q, src_v, src_v, attn_mask=src_mask,
-                              key_padding_mask=src_key_padding_mask)[0]
+                            key_padding_mask=src_key_padding_mask)[0]
         src2 = self.self_attn(src_q, src_q, src_q, attn_mask=src_mask,
                               key_padding_mask=src_key_padding_mask)[0]
         src_q = src_q + self.dropout11(src1) + self.dropout12(src2)
@@ -81,7 +85,6 @@ class HANLayer(nn.Module):
         return src_q.permute(1, 0, 2)
 
 
-
 class MMIL_Net(nn.Module):
 
     def __init__(self):
@@ -90,7 +93,7 @@ class MMIL_Net(nn.Module):
         self.fc_prob = nn.Linear(512, 25)
         self.fc_frame_att = nn.Linear(512, 25)
         self.fc_av_att = nn.Linear(512, 25)
-        self.fc_a =  nn.Linear(128, 512)
+        self.fc_a = nn.Linear(128, 512)
         self.fc_v = nn.Linear(2048, 512)
         self.fc_st = nn.Linear(512, 512)
         self.fc_fusion = nn.Linear(1024, 512)
@@ -101,37 +104,58 @@ class MMIL_Net(nn.Module):
         self.cmt_encoder = Encoder(CMTLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
         self.hat_encoder = Encoder(HANLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
 
-    def forward(self, audio, visual, visual_st):
+        # self.nlayer = 1
+        # self.avtransformer1 = nn.Transformer(num_encoder_layers=self.nlayer, num_decoder_layers=self.nlayer,
+        #                                      dropout=0.3)
+        # self.avtransformer2 = nn.Transformer(num_encoder_layers=self.nlayer, num_decoder_layers=self.nlayer,
+        #                                      dropout=0.3)
 
-        x1 = self.fc_a(audio)
-        
+    def forward(self, audio, visual, visual_st):
+        # audio ([16, 10, 128]), visual ([16, 80, 2048]), visual_st ([16, 10, 512])
+        # visual: spatial feature extracted by ResNet152 from 80 frames -> 80x2048
+        # visual_st: spatio-temporal feature extracted by R2Plus1D from 10 8-frame clips -> 10x512
+
+        x1 = self.fc_a(audio)  # ([16, 10, 512])
+
         # 2d and 3d visual feature fusion
-        vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1)
-        vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)
-        vid_st = self.fc_st(visual_st)
-        x2 = torch.cat((vid_s, vid_st), dim =-1)
-        x2 = self.fc_fusion(x2)
-        
-        print(x1.size())
-        print(x2.size())
+        vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1)  # ([16, 80, 2048])-> ([16, 512, 80, 1])
+        vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)  # ([16, 10, 512])
+        vid_st = self.fc_st(visual_st)  # ([16, 10, 512])
+        x2 = torch.cat((vid_s, vid_st), dim=-1)  # ([16, 10, 1024])
+        x2 = self.fc_fusion(x2)  # ([16, 10, 512])
+
+        ##------------- data augmentation -------------
+        # print("audio shape "+str(x1.size())) # audio-visual snippet pairs ([16, 10, 512])
+        # print("video shape "+str(x2.size())) # 16 batch size, 10 sec, 512-D A/V features
+        # idx1, idx2 = torch.randint(512, (100, 1)), torch.randint(512, (100, 1))
+        # x1[:, :, idx1], x2[:, :, idx2] = 0.0, 0.0
+
+        # Fusion
 
         # HAN
-        x1, x2 = self.hat_encoder(x1, x2)
+        x1, x2 = self.hat_encoder(x1, x2) # ([16, 10, 512]), ([16, 10, 512]) ->
+
+        # print("here")
+        # x1, x2 = self.avtransformer1(x1.transpose(0, 1), x2.transpose(0, 1)).transpose(0, 1), self.avtransformer2(
+        #     x2.transpose(0, 1), x1.transpose(0, 1)).transpose(0, 1)
+        # print("there")
 
         # prediction
-        x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2)
-        frame_prob = torch.sigmoid(self.fc_prob(x))
+        x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2)  # ([16, 10, 2, 512]) audio-visual aggregated features
+        frame_prob = torch.sigmoid(self.fc_prob(x))  # ([16, 10, 2, 25]) -> 25 event categories, 0: auido prob, 1: video prob (shared FC layer)
 
         # attentive MMIL pooling
-        frame_att = torch.softmax(self.fc_frame_att(x), dim=1)
-        av_att = torch.softmax(self.fc_av_att(x), dim=2)
-        temporal_prob = (frame_att * frame_prob)
-        global_prob = (temporal_prob*av_att).sum(dim=2).sum(dim=1)
+        frame_att = torch.softmax(self.fc_frame_att(x), dim=1)  # ([16, 10, 2, 25])
+        av_att = torch.softmax(self.fc_av_att(x), dim=2)  # ([16, 10, 2, 25])
+        temporal_prob = (frame_att * frame_prob)  # ([16, 10, 2, 25])
+        global_prob = (temporal_prob * av_att).sum(dim=2).sum(dim=1)  # ([16, 25])
 
-        a_prob = temporal_prob[:, :, 0, :].sum(dim=1)
-        v_prob =temporal_prob[:, :, 1, :].sum(dim=1)
+        #
+        a_prob = temporal_prob[:, :, 0, :].sum(dim=1)  # ([16, 25])
+        v_prob = temporal_prob[:, :, 1, :].sum(dim=1)  # ([16, 25])
 
-        return global_prob, a_prob, v_prob, frame_prob
+        return global_prob, a_prob, v_prob, frame_prob  # ([16, 25]), ([16, 25]), ([16, 25]), ([16, 10, 2, 25])
+
 
 class CMTLayer(nn.Module):
 

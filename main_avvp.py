@@ -17,13 +17,20 @@ def set_random_seed(seed):
     print("set random seed as {}".format(seed))
     os.environ['PYTHONHASHSEED'] = str(seed)
 
-def train(args, model, train_loader, optimizer, criterion, epoch):
+def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
     model.train()
     for batch_idx, sample in enumerate(train_loader):
-        audio, video, video_st, target = sample['audio'].to('cuda'), sample['video_s'].to('cuda'), sample['video_st'].to('cuda'), sample['label'].type(torch.FloatTensor).to('cuda')
+        audio, video, video_st, target = sample['audio'].to(args.device), sample['video_s'].to(args.device), sample['video_st'].to(args.device), sample['label'].type(torch.FloatTensor).to(args.device)
+
+        # audio ([16, 10, 128]), video ([16, 80, 2048]), video_st ([16, 10, 512]), target ([16, 25])
+        # [batch size, second, feature dim]
+        # 10 sec video, 8 fps
+        # 128-D audio representation for each 1s audio segment
+        # visual: spatial feature extracted by ResNet152 from 80 frames -> 80x2048
+        # visual_st: spatio-temporal feature extracted by R2Plus1D from 10 8-frame clips -> 10x512
 
         optimizer.zero_grad()
-        output, a_prob, v_prob, _ = model(audio, video, video_st)
+        output, a_prob, v_prob, _ = model(audio, video, video_st) # ([16, 25]), ([16, 25]), ([16, 25])
         output.clamp_(min=1e-7, max=1 - 1e-7)
         a_prob.clamp_(min=1e-7, max=1 - 1e-7)
         v_prob.clamp_(min=1e-7, max=1 - 1e-7)
@@ -35,7 +42,12 @@ def train(args, model, train_loader, optimizer, criterion, epoch):
         Pv = v * target + (1 - v) * 0.5
 
         # individual guided learning
-        loss =  criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target) 
+        loss = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)  # target ([16, 25])
+
+        if criterion2 is not None: # not empty
+            loss = loss + criterion2(target, output, output[torch.randint(0, 16, (16,)), :])  # + contrastive loss
+            if epoch ==0:
+                print("use Triplet Loss!")
 
         loss.backward()
         optimizer.step()
@@ -45,7 +57,9 @@ def train(args, model, train_loader, optimizer, criterion, epoch):
                        100. * batch_idx / len(train_loader), loss.item()))
 
 
-def eval(model, val_loader, set):
+def eval(model, val_loader, set, epoch=-1):
+    device=torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
+
     categories = ['Speech', 'Car', 'Cheering', 'Dog', 'Cat', 'Frying_(food)',
                   'Basketball_bounce', 'Fire_alarm', 'Chainsaw', 'Cello', 'Banjo',
                   'Singing', 'Chicken_rooster', 'Violin_fiddle', 'Vacuum_cleaner',
@@ -71,7 +85,7 @@ def eval(model, val_loader, set):
 
     with torch.no_grad():
         for batch_idx, sample in enumerate(val_loader):
-            audio, video, video_st, target = sample['audio'].to('cuda'), sample['video_s'].to('cuda'),sample['video_st'].to('cuda'), sample['label'].to('cuda')
+            audio, video, video_st, target = sample['audio'].to(device), sample['video_s'].to(device),sample['video_st'].to(device), sample['label'].to(device)
             output, a_prob, v_prob, frame_prob = model(audio, video, video_st)
             o = (output.cpu().detach().numpy() >= 0.5).astype(np.int_)
 
@@ -137,25 +151,32 @@ def eval(model, val_loader, set):
             F_event.append(f)
             F_event_av.append(f_av)
 
-    
-    print('Audio Event Detection Segment-level F1: {:.1f}'.format(100 * np.mean(np.array(F_seg_a))))
-    print('Visual Event Detection Segment-level F1: {:.1f}'.format(100 * np.mean(np.array(F_seg_v))))
-    print('Audio-Visual Event Detection Segment-level F1: {:.1f}'.format(100 * np.mean(np.array(F_seg_av))))
+    segA, segV, segAV =100 * np.mean(np.array(F_seg_a)), 100 * np.mean(np.array(F_seg_v)),100 * np.mean(np.array(F_seg_av))
+    print('Audio Event Detection Segment-level F1: {:.1f}'.format(segA))
+    print('Visual Event Detection Segment-level F1: {:.1f}'.format(segV))
+    print('Audio-Visual Event Detection Segment-level F1: {:.1f}'.format(segAV))
 
     avg_type = (100 * np.mean(np.array(F_seg_av))+100 * np.mean(np.array(F_seg_a))+100 * np.mean(np.array(F_seg_v)))/3.
     avg_event = 100 * np.mean(np.array(F_seg))
     print('Segment-levelType@Avg. F1: {:.1f}'.format(avg_type))
     print('Segment-level Event@Avg. F1: {:.1f}'.format(avg_event))
 
-    print('Audio Event Detection Event-level F1: {:.1f}'.format(100 * np.mean(np.array(F_event_a))))
-    print('Visual Event Detection Event-level F1: {:.1f}'.format(100 * np.mean(np.array(F_event_v))))
-    print('Audio-Visual Event Detection Event-level F1: {:.1f}'.format(100 * np.mean(np.array(F_event_av))))
+    eveA, eveV, eveAV = 100 * np.mean(np.array(F_event_a)), 100 * np.mean(np.array(F_event_v)), 100 * np.mean(np.array(F_event_av))
+    print('Audio Event Detection Event-level F1: {:.1f}'.format(eveA))
+    print('Visual Event Detection Event-level F1: {:.1f}'.format(eveV))
+    print('Audio-Visual Event Detection Event-level F1: {:.1f}'.format(eveAV))
 
     avg_type_event = (100 * np.mean(np.array(F_event_av)) + 100 * np.mean(np.array(F_event_a)) + 100 * np.mean(
         np.array(F_event_v))) / 3.
     avg_event_level = 100 * np.mean(np.array(F_event))
     print('Event-level Type@Avg. F1: {:.1f}'.format(avg_type_event))
     print('Event-level Event@Avg. F1: {:.1f}'.format(avg_event_level))
+
+    total=segA+ segV+ segAV+ avg_type+ avg_event+ eveA+ eveV+ eveAV+ avg_type_event+avg_event_level
+    print('overall ep-{}: {:.1f}, {:.1f}, {:.1f}, {:.1f}, {:.1f} |'
+          ' {:.1f}, {:.1f}, {:.1f}, {:.1f}, {:.1f}, | sum {:.1f}'.format(epoch,
+        eveA, eveV, eveAV,avg_type,avg_type,eveA, eveV, eveAV,avg_type_event,avg_event_level,total))
+
     return avg_type
 
 
@@ -202,9 +223,11 @@ def main():
 
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     #torch.manual_seed(args.seed)
+    args.device=torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
+
 
     if args.model == 'MMIL_Net':
-        model = MMIL_Net().to('cuda')
+        model = MMIL_Net().to(args.device)
     else:
         raise ('not recognized')
 
@@ -219,14 +242,18 @@ def main():
         optimizer = optim.Adam(model.parameters(), lr=args.lr)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
         criterion = nn.BCELoss()
+        # criterion2 = nn.TripletMarginLoss(margin=1.0, p=2) # contrastive loss
+        criterion2 = None
+
         best_F = 0
         for epoch in range(1, args.epochs + 1):
-            train(args, model, train_loader, optimizer, criterion, epoch=epoch)
+            train(args, model, train_loader, optimizer, criterion, epoch=epoch, criterion2=criterion2)
             scheduler.step(epoch)
-            F = eval(model, val_loader, args.label_val)
+            F = eval(model, val_loader, args.label_val, epoch)
             if F >= best_F:
                 best_F = F
                 torch.save(model.state_dict(), args.model_save_dir + args.checkpoint + ".pt")
+
     elif args.mode == 'val':
         test_dataset = LLP_dataset(label=args.label_val, audio_dir=args.audio_dir, video_dir=args.video_dir,
                                     st_dir=args.st_dir, transform=transforms.Compose([
