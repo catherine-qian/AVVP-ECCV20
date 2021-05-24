@@ -26,6 +26,8 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
         # [batch size, second, feature dim]
         # 10 sec video, 8 fps
         # 128-D audio representation for each 1s audio segment
+        # visual: spatial feature extracted by ResNet152 from 80 frames -> 80x2048
+        # visual_st: spatio-temporal feature extracted by R2Plus1D from 10 8-frame clips -> 10x512
 
         optimizer.zero_grad()
         output, a_prob, v_prob, _ = model(audio, video, video_st) # ([16, 25]), ([16, 25]), ([16, 25])
@@ -44,6 +46,8 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
 
         if criterion2 is not None: # not empty
             loss = loss + criterion2(target, output, output[torch.randint(0, 16, (16,)), :])  # + contrastive loss
+            if epoch ==0:
+                print("use Triplet Loss!")
 
         loss.backward()
         optimizer.step()
@@ -238,7 +242,8 @@ def main():
         optimizer = optim.Adam(model.parameters(), lr=args.lr)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
         criterion = nn.BCELoss()
-        criterion2 = nn.TripletMarginLoss(margin=1.0, p=2) # contrastive loss
+        # criterion2 = nn.TripletMarginLoss(margin=1.0, p=2) # contrastive loss
+        criterion2 = None
 
         best_F = 0
         for epoch in range(1, args.epochs + 1):
@@ -248,6 +253,7 @@ def main():
             if F >= best_F:
                 best_F = F
                 torch.save(model.state_dict(), args.model_save_dir + args.checkpoint + ".pt")
+
     elif args.mode == 'val':
         test_dataset = LLP_dataset(label=args.label_val, audio_dir=args.audio_dir, video_dir=args.video_dir,
                                     st_dir=args.st_dir, transform=transforms.Compose([
