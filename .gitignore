@@ -1,4 +1,9 @@
 data/
 feats/
+<<<<<<< HEAD
 *.out
 log/
+=======
+log/
+*.out
+>>>>>>> 7256665c8c88f7c0d3933ed1656b8613a9be2ffa
