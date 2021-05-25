@@ -102,33 +102,36 @@ class MMIL_Net(nn.Module):
         self.hat_encoder = Encoder(HANLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
 
     def forward(self, audio, visual, visual_st):
+        # audio ([16, 10, 128]), visual ([16, 80, 2048]), visual_st ([16, 10, 512])
+        # visual: spatial feature extracted by ResNet152 from 80 frames -> 80x2048
+        # visual_st: spatio-temporal feature extracted by R2Plus1D from 10 8-frame clips -> 10x512
 
         x1 = self.fc_a(audio)
 
         # 2d and 3d visual feature fusion
-        vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1)
-        vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)
-        vid_st = self.fc_st(visual_st)
-        x2 = torch.cat((vid_s, vid_st), dim =-1)
-        x2 = self.fc_fusion(x2)
+        vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1) # ([16, 80, 2048])-> ([16, 512, 80, 1])
+        vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)  # ([16, 10, 512])
+        vid_st = self.fc_st(visual_st) # ([16, 10, 512])
+        x2 = torch.cat((vid_s, vid_st), dim =-1) # ([16, 10, 1024])
+        x2 = self.fc_fusion(x2) # ([16, 10, 512])
 
         # HAN
         x1, x2 = self.hat_encoder(x1, x2)
 
         # prediction
-        x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2)
-        frame_prob = torch.sigmoid(self.fc_prob(x))
+        x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2) # ([16, 10, 2, 512]) audio-visual aggregated features
+        frame_prob = torch.sigmoid(self.fc_prob(x)) # ([16, 10, 2, 25]) -> 25 event categories, 0: auido prob, 1: video prob (shared FC layer)
 
         # attentive MMIL pooling
-        frame_att = torch.softmax(self.fc_frame_att(x), dim=1)
-        av_att = torch.softmax(self.fc_av_att(x), dim=2)
-        temporal_prob = (frame_att * frame_prob)
-        global_prob = (temporal_prob*av_att).sum(dim=2).sum(dim=1)
+        frame_att = torch.softmax(self.fc_frame_att(x), dim=1) # ([16, 10, 2, 25])
+        av_att = torch.softmax(self.fc_av_att(x), dim=2) # ([16, 10, 2, 25])
+        temporal_prob = (frame_att * frame_prob)  # ([16, 10, 2, 25])
+        global_prob = (temporal_prob*av_att).sum(dim=2).sum(dim=1) # ([16, 25])
 
-        a_prob = temporal_prob[:, :, 0, :].sum(dim=1)
-        v_prob =temporal_prob[:, :, 1, :].sum(dim=1)
+        a_prob = temporal_prob[:, :, 0, :].sum(dim=1) # ([16, 25])
+        v_prob =temporal_prob[:, :, 1, :].sum(dim=1)  # ([16, 25])
 
-        return global_prob, a_prob, v_prob, frame_prob
+        return global_prob, a_prob, v_prob, frame_prob # ([16, 25]), ([16, 25]), ([16, 25]), ([16, 10, 2, 25])
 
 class CMTLayer(nn.Module):
 
