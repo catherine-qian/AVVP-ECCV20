@@ -12,11 +12,11 @@ import pandas as pd
 def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
     model.train()
     for batch_idx, sample in enumerate(train_loader):
-        audio, video, video_st, target = sample['audio'].to('cuda'), sample['video_s'].to('cuda'), sample[
-            'video_st'].to('cuda'), sample['label'].type(torch.FloatTensor).to('cuda')
+        audio, video, video_st, target = sample['audio'].to(args.device), sample['video_s'].to(args.device), sample[
+            'video_st'].to(args.device), sample['label'].type(torch.FloatTensor).to(args.device)
 
         optimizer.zero_grad()
-        output, a_prob, v_prob, _ = model(audio, video, video_st)
+        output, a_prob, v_prob, _, x1, x2 = model(audio, video, video_st)
         output.clamp_(min=1e-7, max=1 - 1e-7)
         a_prob.clamp_(min=1e-7, max=1 - 1e-7)
         v_prob.clamp_(min=1e-7, max=1 - 1e-7)
@@ -29,7 +29,11 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
 
         # individual guided learning
         loss = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)
+
         if criterion2 is not None:  # not empty
+            # x1 ([16, 10, 512]) audio feature, x2 ([16, 10, 512]) video feature
+            # x1_pos = x1 +
+            # x1_neg =
             loss = loss + criterion2(target, output, output[torch.randint(0, 16, (16,)), :])  #
 
         loss.backward()
@@ -41,6 +45,8 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
 
 
 def eval(model, val_loader, set, epoch=-1):
+    device=torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
+
     categories = ['Speech', 'Car', 'Cheering', 'Dog', 'Cat', 'Frying_(food)',
                   'Basketball_bounce', 'Fire_alarm', 'Chainsaw', 'Cello', 'Banjo',
                   'Singing', 'Chicken_rooster', 'Violin_fiddle', 'Vacuum_cleaner',
@@ -66,9 +72,9 @@ def eval(model, val_loader, set, epoch=-1):
 
     with torch.no_grad():
         for batch_idx, sample in enumerate(val_loader):
-            audio, video, video_st, target = sample['audio'].to('cuda'), sample['video_s'].to('cuda'), sample[
-                'video_st'].to('cuda'), sample['label'].to('cuda')
-            output, a_prob, v_prob, frame_prob = model(audio, video, video_st)
+            audio, video, video_st, target = sample['audio'].to(device), sample['video_s'].to(device), sample[
+                'video_st'].to(device), sample['label'].to(device)
+            output, a_prob, v_prob, frame_prob, *_ = model(audio, video, video_st)
             o = (output.cpu().detach().numpy() >= 0.5).astype(np.int_)
 
             Pa = frame_prob[0, :, 0, :].cpu().detach().numpy()
@@ -208,9 +214,11 @@ def main():
 
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     torch.manual_seed(args.seed)
+    args.device=torch.device("cuda:"+args.gpu if torch.cuda.is_available() else 'cpu')
+
 
     if args.model == 'MMIL_Net':
-        model = MMIL_Net().to('cuda')
+        model = MMIL_Net().to(args.device)
     else:
         raise ('not recognized')
 
@@ -229,6 +237,7 @@ def main():
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
         criterion = nn.BCELoss()
         # criterion2 = nn.TripletMarginLoss(margin=1.0, p=2) # contrastive loss
+        criterion2 = None
 
         best_F = 0
         for epoch in range(1, args.epochs + 1):
