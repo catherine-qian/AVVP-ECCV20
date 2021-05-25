@@ -1,0 +1,7 @@
+data/
+feats/
+models/
+log/
+*.out
+__pycache__/
+**/*.pyc
