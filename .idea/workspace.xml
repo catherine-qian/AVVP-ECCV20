@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5d7cf2e-a266-46c3-a785-0569d5248ba4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main_avvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_avvp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nets/net_audiovisual.py" beforeDir="false" afterPath="$PROJECT_DIR$/nets/net_audiovisual.py" afterDir="false" />
-    </list>
+    <list default="true" id="c5d7cf2e-a266-46c3-a785-0569d5248ba4" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,7 +102,7 @@
       <workItem from="1621846541183" duration="1830000" />
       <workItem from="1621863272988" duration="74000" />
       <workItem from="1621863365907" duration="934000" />
-      <workItem from="1621864334389" duration="5167000" />
+      <workItem from="1621864334389" duration="5336000" />
     </task>
     <servers />
   </component>
