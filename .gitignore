@@ -1,17 +1,10 @@
 data/
 feats/
-<<<<<<< HEAD
 log/
 *.out
 *.pyc
 **/*.pyc
 models/*
 **/**/*.pyc
-
-=======
 models/
-log/
-*.out
 __pycache__/
-**/*.pyc
->>>>>>> new_master
