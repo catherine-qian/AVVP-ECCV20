@@ -1,5 +1,6 @@
 data/
 feats/
+<<<<<<< HEAD
 log/
 *.out
 *.pyc
@@ -7,3 +8,10 @@ log/
 models/*
 **/**/*.pyc
 
+=======
+models/
+log/
+*.out
+__pycache__/
+**/*.pyc
+>>>>>>> new_master

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c5d7cf2e-a266-46c3-a785-0569d5248ba4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/AVVP.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nets/losses.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/qian_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_avvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_avvp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nets/net_audiovisual.py" beforeDir="false" afterPath="$PROJECT_DIR$/nets/net_audiovisual.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JupyterTrust" id="90725cf1-89c7-41d6-b0f8-acb8f00fe093" />
+  <component name="ProjectId" id="1sedSgWOJMa2542vos7b5kFV5Y2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="AVVP" sdk-home="sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/avvp/bin/python">
+        <option name="mySdkHome" value="sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/avvp/bin/python" />
+        <option name="myModuleName" value="AVVP" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="PyDebuggerOptionsProvider">
+    <option name="mySupportGeventDebugging" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data/qian" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main_avvp">
+    <configuration default="true" type="DjangoTestsConfigurationType">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/opt/anaconda3/envs/python35/bin/python3.5" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../python/Pycharm" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../python/Pycharm" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main_avvp" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/avvp/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_avvp.py" />
+      <option name="PARAMETERS" value="--mode train --audio_dir feats/vggish/ --video_dir feats/res152/ --st_dir feats/r2plus1d_18/" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="qian_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/psp/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/qian_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <module name="AVVP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.main_avvp" />
+      <item itemvalue="Python.qian_test" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c5d7cf2e-a266-46c3-a785-0569d5248ba4" name="Default Changelist" comment="" />
+      <created>1621236991053</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1621236991053</updated>
+      <workItem from="1621236993031" duration="2284000" />
+      <workItem from="1621239375642" duration="20690000" />
+      <workItem from="1621846541183" duration="1830000" />
+      <workItem from="1621863272988" duration="74000" />
+      <workItem from="1621863365907" duration="934000" />
+      <workItem from="1621864334389" duration="13891000" />
+      <workItem from="1622011333176" duration="562000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="41" y="-1037" key="#Deployment" timestamp="1621863556829">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="41" y="-1037" key="#Deployment/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621863556829" />
+    <state x="41" y="-1037" key="#Deployment/0.23.1440.824/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621238640676" />
+    <state x="41" y="-1037" key="#Deployment/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621855807944" />
+    <state x="267" y="-884" key="#Inspections" timestamp="1621863388119">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="267" y="-884" key="#Inspections/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621863388119" />
+    <state x="159" y="-973" key="#Options" timestamp="1621239275499">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="159" y="-973" key="#Options/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239275499" />
+    <state x="17" y="-1057" key="#SSH_Configurations" timestamp="1621239590632">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="17" y="-1057" key="#SSH_Configurations/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239590632" />
+    <state x="98" y="-902" width="1086" height="894" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1622011203712">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="98" y="-902" width="1086" height="894" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011203712" />
+    <state x="98" y="-902" width="1237" height="826" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239097359" />
+    <state x="323" y="-892" key="FileChooserDialogImpl" timestamp="1621239572758">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="323" y="-892" key="FileChooserDialogImpl/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239572758" />
+    <state width="1858" height="328" key="GridCell.Tab.0.bottom" timestamp="1622011728158">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728158" />
+    <state width="1858" height="374" key="GridCell.Tab.0.bottom/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276240" />
+    <state width="1858" height="374" key="GridCell.Tab.0.bottom/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356490" />
+    <state width="1858" height="374" key="GridCell.Tab.0.bottom/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444205" />
+    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292937" />
+    <state width="1858" height="328" key="GridCell.Tab.0.center" timestamp="1622011728148">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state width="1858" height="328" key="GridCell.Tab.0.center/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728148" />
+    <state width="1858" height="374" key="GridCell.Tab.0.center/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276238" />
+    <state width="1858" height="374" key="GridCell.Tab.0.center/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356489" />
+    <state width="1858" height="374" key="GridCell.Tab.0.center/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444204" />
+    <state width="1858" height="328" key="GridCell.Tab.0.center/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292936" />
+    <state width="1858" height="328" key="GridCell.Tab.0.left" timestamp="1622011728147">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state width="1858" height="328" key="GridCell.Tab.0.left/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728147" />
+    <state width="1858" height="374" key="GridCell.Tab.0.left/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276234" />
+    <state width="1858" height="374" key="GridCell.Tab.0.left/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356487" />
+    <state width="1858" height="374" key="GridCell.Tab.0.left/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444202" />
+    <state width="1858" height="328" key="GridCell.Tab.0.left/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292936" />
+    <state width="1858" height="328" key="GridCell.Tab.0.right" timestamp="1622011728157">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state width="1858" height="328" key="GridCell.Tab.0.right/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728157" />
+    <state width="1858" height="374" key="GridCell.Tab.0.right/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276239" />
+    <state width="1858" height="374" key="GridCell.Tab.0.right/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356490" />
+    <state width="1858" height="374" key="GridCell.Tab.0.right/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444204" />
+    <state width="1858" height="328" key="GridCell.Tab.0.right/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292937" />
+    <state x="-85" y="-1076" key="SettingsEditor" timestamp="1622011727467">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="-85" y="-1076" key="SettingsEditor/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011727467" />
+    <state x="-85" y="-1076" key="SettingsEditor/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011271293" />
+    <state x="368" y="-739" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1621239706263">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="368" y="-739" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239706263" />
+    <state x="501" y="-927" key="ftp.server.browser" timestamp="1622011721868">
+      <screen x="-319" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="501" y="-927" key="ftp.server.browser/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011721868" />
+    <state x="501" y="-927" key="ftp.server.browser/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621863694968" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/qian_test.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/AVVP_ECCV20$main_avvp.coverage" NAME="main_avvp Coverage Results" MODIFIED="1622011207437" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AVVP$main_avvp.coverage" NAME="main_avvp Coverage Results" MODIFIED="1622011337865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AVVP_ECCV20$main_avvp2.coverage" NAME="main_avvp2 Coverage Results" MODIFIED="1621846269333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
