@@ -7,7 +7,7 @@ from dataloader import *
 from nets.net_audiovisual import MMIL_Net
 from utils.eval_metrics import segment_level, event_level
 import pandas as pd
-
+import os
 
 def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
     model.train()
@@ -31,9 +31,6 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
         loss = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)
 
         if criterion2 is not None:  # not empty
-            # x1 ([16, 10, 512]) audio feature, x2 ([16, 10, 512]) video feature
-            # x1_pos = x1 +
-            # x1_neg =
             loss = loss + criterion2(target, output, output[torch.randint(0, 16, (16,)), :])  #
 
         loss.backward()
