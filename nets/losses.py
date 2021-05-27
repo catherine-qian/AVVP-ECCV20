@@ -7,7 +7,22 @@ from __future__ import print_function
 
 import torch
 import torch.nn as nn
+from utils.basics import *
+import torch.nn.functional as F
 
+
+def contrast(x, target, criterion2):
+    # target [16,25], class label
+    # x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2)  # ([16, 10, 2, 512]) audio-visual aggregated features
+
+    labels = bin2dec(target, target.shape[-1])
+
+    feats = x.reshape(x.shape[0], -1, x.shape[3]) # re-shape to embedding size [16, 20, 512]
+    feats = F.normalize(feats, dim=2)  # normalization
+
+    loss = criterion2(feats, labels)
+
+    return loss
 
 class SupConLoss(nn.Module):
     """Supervised Contrastive Learning: https://arxiv.org/pdf/2004.11362.pdf.
@@ -46,37 +61,37 @@ class SupConLoss(nn.Module):
             raise ValueError('Cannot define both `labels` and `mask`') # give either label or mask
         elif labels is None and mask is None:
             mask = torch.eye(batch_size, dtype=torch.float32).to(device) # identity mask
-        elif labels is not None:
-            labels = labels.contiguous().view(-1, 1) # only provide the class labels
+        elif labels is not None: # only provide the class labels
+            labels = labels.contiguous().view(-1, 1)
             if labels.shape[0] != batch_size:
                 raise ValueError('Num of labels does not match num of features')
-            mask = torch.eq(labels, labels.T).float().to(device)
+            mask = torch.eq(labels, labels.T).float().to(device) # diagonal mask [bs, bs]
         else:
             mask = mask.float().to(device)  # only provide the mask
 
-        contrast_count = features.shape[1]  # number of augmentations for each example
-        contrast_feature = torch.cat(torch.unbind(features, dim=1), dim=0)  # re-construct features?
+        contrast_count = features.shape[1]  # num of augmentations for each example
+        contrast_feature = torch.cat(torch.unbind(features, dim=1), dim=0)  # ubind in aug dim, then concat features with the same augmentation
 
         if self.contrast_mode == 'one':  # only one positive pair
             anchor_feature = features[:, 0]
             anchor_count = 1
         elif self.contrast_mode == 'all':  # same class-> all positive pairs
             anchor_feature = contrast_feature
-            anchor_count = contrast_count
+            anchor_count = contrast_count # num of aug
         else:
             raise ValueError('Unknown mode: {}'.format(self.contrast_mode))
 
         # compute logits
         anchor_dot_contrast = torch.div(
-            torch.matmul(anchor_feature, contrast_feature.T),
+            torch.matmul(anchor_feature, contrast_feature.T), # anchor_feature: ([160, 512]),
             self.temperature)   #  numerator
 
-        # for numerical stability
+        # for numerical stability -> 把matrix压一压防止过大出现nan，最终的Logits就是要的
         logits_max, _ = torch.max(anchor_dot_contrast, dim=1, keepdim=True)
         logits = anchor_dot_contrast - logits_max.detach()
 
         # tile mask
-        mask = mask.repeat(anchor_count, contrast_count)
+        mask = mask.repeat(anchor_count, contrast_count)  # 之前的mask没有aug的情况这一维度，这里把他加上去
         # mask-out self-contrast cases
         logits_mask = torch.scatter(
             torch.ones_like(mask),

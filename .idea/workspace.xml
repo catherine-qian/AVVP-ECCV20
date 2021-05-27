@@ -5,15 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c5d7cf2e-a266-46c3-a785-0569d5248ba4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/AVVP.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nets/losses.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/qian_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/basics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/remote-mappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/remote-mappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_avvp.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_avvp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nets/net_audiovisual.py" beforeDir="false" afterPath="$PROJECT_DIR$/nets/net_audiovisual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nets/losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/nets/losses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qian_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/qian_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +39,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
@@ -163,7 +163,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/psp/bin/python" />
+      <option name="SDK_HOME" value="sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/avvp/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -290,7 +290,8 @@
       <workItem from="1621863272988" duration="74000" />
       <workItem from="1621863365907" duration="934000" />
       <workItem from="1621864334389" duration="13891000" />
-      <workItem from="1622011333176" duration="562000" />
+      <workItem from="1622011333176" duration="3017000" />
+      <workItem from="1622027300817" duration="9824000" />
     </task>
     <servers />
   </component>
@@ -310,10 +311,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="41" y="-1037" key="#Deployment" timestamp="1621863556829">
+    <state x="41" y="-1037" key="#Deployment" timestamp="1622029981066">
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="41" y="-1037" key="#Deployment/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621863556829" />
+    <state x="41" y="-1037" key="#Deployment/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622029981066" />
     <state x="41" y="-1037" key="#Deployment/0.23.1440.824/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621238640676" />
     <state x="41" y="-1037" key="#Deployment/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621855807944" />
     <state x="267" y="-884" key="#Inspections" timestamp="1621863388119">
@@ -328,76 +329,86 @@
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
     <state x="17" y="-1057" key="#SSH_Configurations/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239590632" />
-    <state x="98" y="-902" width="1086" height="894" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1622011203712">
+    <state x="98" y="-902" width="1086" height="894" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1622027223476">
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="98" y="-902" width="1086" height="894" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011203712" />
+    <state x="98" y="-902" width="1086" height="894" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027223476" />
     <state x="98" y="-902" width="1237" height="826" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239097359" />
     <state x="323" y="-892" key="FileChooserDialogImpl" timestamp="1621239572758">
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
     <state x="323" y="-892" key="FileChooserDialogImpl/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239572758" />
-    <state width="1858" height="328" key="GridCell.Tab.0.bottom" timestamp="1622011728158">
-      <screen x="-319" y="-1080" width="1920" height="1080" />
+    <state width="1858" height="474" key="GridCell.Tab.0.bottom" timestamp="1622099150286">
+      <screen x="-82" y="-1200" width="1920" height="1200" />
     </state>
-    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728158" />
-    <state width="1858" height="374" key="GridCell.Tab.0.bottom/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276240" />
+    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622033263674" />
+    <state width="1858" height="474" key="GridCell.Tab.0.bottom/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1622099150286" />
     <state width="1858" height="374" key="GridCell.Tab.0.bottom/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356490" />
-    <state width="1858" height="374" key="GridCell.Tab.0.bottom/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444205" />
-    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292937" />
-    <state width="1858" height="328" key="GridCell.Tab.0.center" timestamp="1622011728148">
-      <screen x="-319" y="-1080" width="1920" height="1080" />
+    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1622089703742" />
+    <state width="1858" height="328" key="GridCell.Tab.0.bottom/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027279884" />
+    <state width="1858" height="474" key="GridCell.Tab.0.center" timestamp="1622099150285">
+      <screen x="-82" y="-1200" width="1920" height="1200" />
     </state>
-    <state width="1858" height="328" key="GridCell.Tab.0.center/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728148" />
-    <state width="1858" height="374" key="GridCell.Tab.0.center/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276238" />
+    <state width="1858" height="328" key="GridCell.Tab.0.center/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622033263672" />
+    <state width="1858" height="474" key="GridCell.Tab.0.center/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1622099150285" />
     <state width="1858" height="374" key="GridCell.Tab.0.center/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356489" />
-    <state width="1858" height="374" key="GridCell.Tab.0.center/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444204" />
-    <state width="1858" height="328" key="GridCell.Tab.0.center/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292936" />
-    <state width="1858" height="328" key="GridCell.Tab.0.left" timestamp="1622011728147">
-      <screen x="-319" y="-1080" width="1920" height="1080" />
+    <state width="1858" height="328" key="GridCell.Tab.0.center/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1622089703739" />
+    <state width="1858" height="328" key="GridCell.Tab.0.center/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027279883" />
+    <state width="1858" height="474" key="GridCell.Tab.0.left" timestamp="1622099150284">
+      <screen x="-82" y="-1200" width="1920" height="1200" />
     </state>
-    <state width="1858" height="328" key="GridCell.Tab.0.left/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728147" />
-    <state width="1858" height="374" key="GridCell.Tab.0.left/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276234" />
+    <state width="1858" height="328" key="GridCell.Tab.0.left/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622033263672" />
+    <state width="1858" height="474" key="GridCell.Tab.0.left/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1622099150284" />
     <state width="1858" height="374" key="GridCell.Tab.0.left/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356487" />
-    <state width="1858" height="374" key="GridCell.Tab.0.left/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444202" />
-    <state width="1858" height="328" key="GridCell.Tab.0.left/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292936" />
-    <state width="1858" height="328" key="GridCell.Tab.0.right" timestamp="1622011728157">
-      <screen x="-319" y="-1080" width="1920" height="1080" />
+    <state width="1858" height="328" key="GridCell.Tab.0.left/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1622089703734" />
+    <state width="1858" height="328" key="GridCell.Tab.0.left/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027279883" />
+    <state width="1858" height="474" key="GridCell.Tab.0.right" timestamp="1622099150285">
+      <screen x="-82" y="-1200" width="1920" height="1200" />
     </state>
-    <state width="1858" height="328" key="GridCell.Tab.0.right/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011728157" />
-    <state width="1858" height="374" key="GridCell.Tab.0.right/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1621682276239" />
+    <state width="1858" height="328" key="GridCell.Tab.0.right/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622033263673" />
+    <state width="1858" height="474" key="GridCell.Tab.0.right/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1622099150285" />
     <state width="1858" height="374" key="GridCell.Tab.0.right/0.23.1440.824/-319.-1057.1920.1057@-319.-1057.1920.1057" timestamp="1621827356490" />
-    <state width="1858" height="374" key="GridCell.Tab.0.right/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1621389444204" />
-    <state width="1858" height="328" key="GridCell.Tab.0.right/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011292937" />
-    <state x="-85" y="-1076" key="SettingsEditor" timestamp="1622011727467">
+    <state width="1858" height="328" key="GridCell.Tab.0.right/0.23.1440.827/-82.-1177.1920.1177@-82.-1177.1920.1177" timestamp="1622089703741" />
+    <state width="1858" height="328" key="GridCell.Tab.0.right/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027279884" />
+    <state x="-85" y="-1076" key="SettingsEditor" timestamp="1622027101466">
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="-85" y="-1076" key="SettingsEditor/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011727467" />
+    <state x="-85" y="-1076" key="SettingsEditor/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027101466" />
     <state x="-85" y="-1076" key="SettingsEditor/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011271293" />
-    <state x="368" y="-739" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1621239706263">
+    <state x="368" y="-739" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1622012541840">
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="368" y="-739" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621239706263" />
-    <state x="501" y="-927" key="ftp.server.browser" timestamp="1622011721868">
+    <state x="368" y="-739" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622012541840" />
+    <state x="501" y="-927" key="ftp.server.browser" timestamp="1622027079589">
       <screen x="-319" y="-1080" width="1920" height="1080" />
     </state>
-    <state x="501" y="-927" key="ftp.server.browser/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622011721868" />
+    <state x="501" y="-927" key="ftp.server.browser/0.0.1440.900/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1622027079589" />
     <state x="501" y="-927" key="ftp.server.browser/0.23.1440.877/-319.-1080.1920.1080@-319.-1080.1920.1080" timestamp="1621863694968" />
+    <state x="375" y="-1200" width="1005" height="1466" key="search.everywhere.popup" timestamp="1622090782177">
+      <screen x="-82" y="-1200" width="1920" height="1200" />
+    </state>
+    <state x="375" y="-1200" width="1005" height="1466" key="search.everywhere.popup/0.0.1440.900/-82.-1200.1920.1200@-82.-1200.1920.1200" timestamp="1622090782177" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/qian_test.py</url>
-          <line>13</line>
-          <option name="timeStamp" value="40" />
+          <url>file://$PROJECT_DIR$/nets/losses.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main_avvp.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="61" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AVVP_ECCV20$main_avvp.coverage" NAME="main_avvp Coverage Results" MODIFIED="1622011207437" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AVVP$main_avvp.coverage" NAME="main_avvp Coverage Results" MODIFIED="1622011337865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AVVP$qian_test.coverage" NAME="qian_test Coverage Results" MODIFIED="1622033250155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AVVP$main_avvp.coverage" NAME="main_avvp Coverage Results" MODIFIED="1622099150214" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AVVP_ECCV20$main_avvp2.coverage" NAME="main_avvp2 Coverage Results" MODIFIED="1621846269333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

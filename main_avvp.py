@@ -8,6 +8,10 @@ from nets.net_audiovisual import MMIL_Net
 from utils.eval_metrics import segment_level, event_level
 import pandas as pd
 import os
+import scipy.io as sio
+from nets.losses import *
+
+
 
 def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
     model.train()
@@ -27,22 +31,31 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
         Pa = a * target + (1 - a) * 0.5
         Pv = v * target + (1 - v) * 0.5
 
+        # -------------------------------------
         # individual guided learning
+        loss0 = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)
 
-        loss = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)
-        if criterion2 is not None:  # not empty
-            loss = loss + criterion2(target, output, output[torch.randint(0, 16, (16,)), :])  #
+        if criterion2 is not None:  # not emptyvm
+
+            x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2)  # ([16, 10, 2, 512]) audio-visual aggregated features
+            loss2 = contrast(x, target, criterion2)
+            loss = loss0 + 0.03*loss2
+        else:
+            loss = loss0
 
         loss.backward()
         optimizer.step()
         if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+            # print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+            #     epoch, batch_idx * len(audio), len(train_loader.dataset),
+            #            100. * batch_idx / len(train_loader), loss.item()))
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}, contras Loss: {:.6f}, total loss: {:.6f}'.format(
                 epoch, batch_idx * len(audio), len(train_loader.dataset),
-                       100. * batch_idx / len(train_loader), loss.item()))
+                       100. * batch_idx / len(train_loader), loss0.item(), loss2.item(), loss.item()))
 
 
 def eval(model, val_loader, set, epoch=-1):
-    device=torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
 
     categories = ['Speech', 'Car', 'Cheering', 'Dog', 'Cat', 'Frying_(food)',
                   'Basketball_bounce', 'Fire_alarm', 'Chainsaw', 'Cello', 'Banjo',
@@ -136,7 +149,6 @@ def eval(model, val_loader, set, epoch=-1):
             F_event.append(f)
             F_event_av.append(f_av)
 
-
     segA, segV, segAV = 100 * np.mean(np.array(F_seg_a)), 100 * np.mean(np.array(F_seg_v)), 100 * np.mean(
         np.array(F_seg_av))
     print('Audio Event Detection Segment-level F1: {:.1f}'.format(segA))
@@ -149,7 +161,6 @@ def eval(model, val_loader, set, epoch=-1):
     print('Segment-levelType@Avg. F1: {:.1f}'.format(avg_type))
     print('Segment-level Event@Avg. F1: {:.1f}'.format(avg_event))
 
-
     eveA, eveV, eveAV = 100 * np.mean(np.array(F_event_a)), 100 * np.mean(np.array(F_event_v)), 100 * np.mean(
         np.array(F_event_av))
     print('Audio Event Detection Event-level F1: {:.1f}'.format(eveA))
@@ -161,7 +172,6 @@ def eval(model, val_loader, set, epoch=-1):
     avg_event_level = 100 * np.mean(np.array(F_event))
     print('Event-level Type@Avg. F1: {:.1f}'.format(avg_type_event))
     print('Event-level Event@Avg. F1: {:.1f}'.format(avg_event_level))
-
 
     total = segA + segV + segAV + avg_type + avg_event + eveA + eveV + eveAV + avg_type_event + avg_event_level
     print('overall ep-{}: {:.1f}, {:.1f}, {:.1f}, {:.1f}, {:.1f} |'
@@ -216,8 +226,7 @@ def main():
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 
     torch.manual_seed(args.seed)
-    args.device=torch.device("cuda:"+args.gpu if torch.cuda.is_available() else 'cpu')
-
+    args.device = torch.device("cuda:" + args.gpu if torch.cuda.is_available() else 'cpu')
 
     if args.model == 'MMIL_Net':
         model = MMIL_Net().to(args.device)
@@ -238,8 +247,9 @@ def main():
         optimizer = optim.Adam(model.parameters(), lr=args.lr)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
         criterion = nn.BCELoss()
-        # criterion2 = nn.TripletMarginLoss(margin=1.0, p=2) # contrastive loss
-        criterion2 = None
+        criterion2 = SupConLoss(temperature=0.2)
+
+
 
         best_F = 0
         for epoch in range(1, args.epochs + 1):
@@ -267,5 +277,4 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()

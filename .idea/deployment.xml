@@ -2,10 +2,23 @@
 <project version="4">
   <component name="PublishConfigData" autoUpload="Always" serverName="qian@172.16.31.38:22 password" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
+      <paths name="AVVP qian@172.16.31.38">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/qian/Documents/AVVP" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/Users/xinyuan/Documents/NUS/Research/Code/AVVP/data" />
+            <excludedPath path="/Users/xinyuan/Documents/NUS/Research/Code/AVVP/feats" />
+            <excludedPath local="true" path="$PROJECT_DIR$" />
+            <excludedPath local="true" path="$PROJECT_DIR$/feats" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
       <paths name="qian@172.16.31.38:22 password">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_6" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/qian/Documents/AVVP" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

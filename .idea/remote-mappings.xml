@@ -7,7 +7,7 @@
         <remote-mappings server-id="python@sftp://qian@172.16.31.38:22/home/qian/anaconda3/envs/avvp/bin/python">
           <settings>
             <list>
-              <mapping local-root="$PROJECT_DIR$" remote-root="/home/qian/Documents/AVVP-ECCV20" />
+              <mapping local-root="$PROJECT_DIR$" remote-root="/home/qian/Documents/AVVP" />
             </list>
           </settings>
         </remote-mappings>
