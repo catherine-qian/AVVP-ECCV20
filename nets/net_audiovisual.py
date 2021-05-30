@@ -36,6 +36,7 @@ class Encoder(nn.Module):
         return output_a, output_v
 
 class HANLayer(nn.Module):
+    #    only use 1 layer
 
     def __init__(self, d_model, nhead, dim_feedforward=512, dropout=0.1):
         super(HANLayer, self).__init__()
@@ -67,9 +68,9 @@ class HANLayer(nn.Module):
         src_q = src_q.permute(1, 0, 2)
         src_v = src_v.permute(1, 0, 2)
         src1 = self.cm_attn(src_q, src_v, src_v, attn_mask=src_mask,
-                              key_padding_mask=src_key_padding_mask)[0]
+                            key_padding_mask=src_key_padding_mask)[0]  # multi-head attention
         src2 = self.self_attn(src_q, src_q, src_q, attn_mask=src_mask,
-                              key_padding_mask=src_key_padding_mask)[0]
+                              key_padding_mask=src_key_padding_mask)[0]  # multi-head attention
         src_q = src_q + self.dropout11(src1) + self.dropout12(src2)
         src_q = self.norm1(src_q)
 
@@ -77,7 +78,6 @@ class HANLayer(nn.Module):
         src_q = src_q + self.dropout2(src2)
         src_q = self.norm2(src_q)
         return src_q.permute(1, 0, 2)
-
 
 
 class MMIL_Net(nn.Module):
@@ -104,14 +104,14 @@ class MMIL_Net(nn.Module):
         # visual: spatial feature extracted by ResNet152 from 80 frames -> 80x2048
         # visual_st: spatio-temporal feature extracted by R2Plus1D from 10 8-frame clips -> 10x512
 
-        x1 = self.fc_a(audio)
+        x1 = self.fc_a(audio) # audio feature ([16, 10, 512])
 
         # 2d and 3d visual feature fusion
-        vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1) # ([16, 80, 2048])-> ([16, 512, 80, 1])
-        vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)  # ([16, 10, 512])
-        vid_st = self.fc_st(visual_st) # ([16, 10, 512])
-        x2 = torch.cat((vid_s, vid_st), dim =-1) # ([16, 10, 1024])
-        x2 = self.fc_fusion(x2) # ([16, 10, 512])
+        vid_s = self.fc_v(visual).permute(0, 2, 1).unsqueeze(-1)  # ([16, 80, 2048])-> ([16, 512, 80, 1])
+        vid_s = F.avg_pool2d(vid_s, (8, 1)).squeeze(-1).permute(0, 2, 1)  # ([16, 512, 10, 1]) ->([16, 512, 10])-> ([16, 10, 512])
+        vid_st = self.fc_st(visual_st)  # ([16, 10, 512])
+        x2 = torch.cat((vid_s, vid_st), dim=-1)  # ([16, 10, 1024])
+        x2 = self.fc_fusion(x2)  # visual feature ([16, 10, 512])
 
         # HAN
         x1, x2 = self.hat_encoder(x1, x2)
