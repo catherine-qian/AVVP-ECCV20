@@ -123,13 +123,14 @@ class MMIL_Net(nn.Module):
         # attentive MMIL pooling
         frame_att = torch.softmax(self.fc_frame_att(x), dim=1) # ([16, 10, 2, 25])
         av_att = torch.softmax(self.fc_av_att(x), dim=2) # ([16, 10, 2, 25])
+
         temporal_prob = (frame_att * frame_prob)  # ([16, 10, 2, 25])
         global_prob = (temporal_prob*av_att).sum(dim=2).sum(dim=1) # ([16, 25])
 
         a_prob = temporal_prob[:, :, 0, :].sum(dim=1) # ([16, 25])
         v_prob =temporal_prob[:, :, 1, :].sum(dim=1)  # ([16, 25])
 
-        return global_prob, a_prob, v_prob, frame_prob, x1, x2 # ([16, 25]), ([16, 25]), ([16, 25]), ([16, 10, 2, 25])
+        return global_prob, a_prob, v_prob, frame_prob, x1, x2  # ([16, 25]), ([16, 25]), ([16, 25]), ([16, 10, 2, 25])
 
 class CMTLayer(nn.Module):
 

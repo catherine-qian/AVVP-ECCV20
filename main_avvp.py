@@ -10,6 +10,9 @@ import pandas as pd
 import os
 import scipy.io as sio
 from nets.losses import *
+from utils.display import *
+import sys
+import datetime
 
 
 def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
@@ -20,6 +23,7 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
 
         optimizer.zero_grad()
         output, a_prob, v_prob, _, x1, x2 = model(audio, video, video_st)  # x1-audio features, x2-video feature
+
         output.clamp_(min=1e-7, max=1 - 1e-7)
         a_prob.clamp_(min=1e-7, max=1 - 1e-7)
         v_prob.clamp_(min=1e-7, max=1 - 1e-7)
@@ -35,7 +39,7 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
         # loss0 = criterion(output, target)
 
         # criterion2 = None
-        if criterion2 is not None:  # not empty
+        if criterion2 is not None and epoch>15:  # not empty
             loss2 = contrast([], x2, target, criterion2)
             loss = loss0 + 0.03 * loss2
         else:
@@ -53,6 +57,9 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}, contras Loss: {:.6f}, total loss: {:.6f}'.format(
                 epoch, batch_idx * len(audio), len(train_loader.dataset),
                        100. * batch_idx / len(train_loader), loss0.item(), loss2.item(), loss.item()))
+
+    if sys.gettrace() is not None:
+        dispP(a_prob, v_prob, output, target)
 
 
 def eval(model, val_loader, set, epoch=-1):
@@ -181,10 +188,17 @@ def eval(model, val_loader, set, epoch=-1):
                                                                          eveA, eveV, eveAV, avg_type_event,
                                                                          avg_event_level,
                                                                          total))
-    return avg_type
+    if sys.gettrace() is not None:
+        disptest(SO_a, SO_v, SO_av, GT_a, GT_v, GT_av)  # display evaluation result
+
+    # return avg_type
+    return total
 
 
 def main():
+    modelname = str(datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    print(modelname)
+
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch Implementation of Audio-Visual Video Parsing')
     parser.add_argument(
@@ -211,8 +225,8 @@ def main():
         "--model", type=str, default='MMIL_Net', help="with model to use")
     parser.add_argument(
         "--mode", type=str, default='train', help="with mode to use")
-    parser.add_argument('--seed', type=int, default=1, metavar='S',
-                        help='random seed (default: 1)')
+    parser.add_argument('--seed', type=int, default=1000, metavar='S',
+                        help='random seed (default: 1000)')
     parser.add_argument('--log-interval', type=int, default=50, metavar='N',
                         help='how many batches to wait before logging training status')
     parser.add_argument(
@@ -260,21 +274,32 @@ def main():
             F = eval(model, val_loader, args.label_val, epoch)  # validation set
             if F >= best_F:
                 best_F = F
-                torch.save(model.state_dict(), args.model_save_dir + args.checkpoint + ".pt")
+                torch.save(model.state_dict(), args.model_save_dir + args.checkpoint + modelname + ".pt")
+
+        # best model-> print test result
+        print("finished: best model----testing result")
+        test_dataset = LLP_dataset(label=args.label_test, audio_dir=args.audio_dir, video_dir=args.video_dir,
+                                   st_dir=args.st_dir, transform=transforms.Compose([ToTensor()]))
+        test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=1, pin_memory=True)
+        model.load_state_dict(
+            torch.load(args.model_save_dir + args.checkpoint + modelname + ".pt"))  # models/MMIL_Net.pt
+        eval(model, test_loader, args.label_test)
 
     elif args.mode == 'val':
         test_dataset = LLP_dataset(label=args.label_val, audio_dir=args.audio_dir, video_dir=args.video_dir,
                                    st_dir=args.st_dir, transform=transforms.Compose([ToTensor()]))
         test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=1, pin_memory=True)
-        model.load_state_dict(torch.load(args.model_save_dir + args.checkpoint + ".pt"))
+        model.load_state_dict(torch.load(args.model_save_dir + args.checkpoint + modelname + ".pt"))
         eval(model, test_loader, args.label_val)
     else:
         test_dataset = LLP_dataset(label=args.label_test, audio_dir=args.audio_dir, video_dir=args.video_dir,
                                    st_dir=args.st_dir, transform=transforms.Compose([ToTensor()]))
         test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=1, pin_memory=True)
-        model.load_state_dict(torch.load(args.model_save_dir + args.checkpoint + ".pt"))  # models/MMIL_Net.pt
+        model.load_state_dict(torch.load(args.model_save_dir + args.checkpoint + modelname+".pt"))  # models/MMIL_Net.pt
         eval(model, test_loader, args.label_test)
 
 
 if __name__ == '__main__':
+    if sys.gettrace() is not None:
+        print("in debug mode")
     main()
