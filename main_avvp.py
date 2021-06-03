@@ -38,13 +38,14 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
         loss0 = criterion(a_prob, Pa) + criterion(v_prob, Pv) + criterion(output, target)  # ([16, 25])
         # loss0 = criterion(output, target)
 
-        # criterion2 = None
-        if criterion2 is not None and epoch>15:  # not empty
-            loss2 = contrast([], x2, target, criterion2)
-            loss = loss0 + 0.03 * loss2
+        criterion2 = None
+        loss2, loss3 = 0 * loss0, 0 * loss0
+        if criterion2 is not None and epoch > 0:  # not empty
+            loss2 = contrast(x1, [], target, criterion2) # audio-only
+            loss3 = contrast([], x2, target, criterion2)  # video-only
+            loss = loss0 + 0.03 * loss2 + 0.03 * loss3
         else:
             loss = loss0
-            loss2 = 0 * loss
 
         # loss = loss2
 
@@ -54,9 +55,9 @@ def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=Non
             # print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
             #     epoch, batch_idx * len(audio), len(train_loader.dataset),
             #            100. * batch_idx / len(train_loader), loss.item()))
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}, contras Loss: {:.6f}, total loss: {:.6f}'.format(
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}, contras Loss(A): {:.6f}, contras Loss(V): {:.6f}, total loss: {:.6f}'.format(
                 epoch, batch_idx * len(audio), len(train_loader.dataset),
-                       100. * batch_idx / len(train_loader), loss0.item(), loss2.item(), loss.item()))
+                       100. * batch_idx / len(train_loader), loss0.item(), loss2.item(), loss3.item(), loss.item()))
 
     if sys.gettrace() is not None:
         dispP(a_prob, v_prob, output, target)

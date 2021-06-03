@@ -31,19 +31,28 @@ def contrast(x1, x2, target, criterion2):
 
     # ----- concat to contrast
     # single modality
-    feats = torch.cat([x1, x2], dim=2) if len(x1) else x2  # av, video-only feature
+    # feats = torch.cat([x1, x2], dim=2) if len(x1) else x2  # av, video-only feature
     # feats = torch.cat([x1, x2], dim=2) if len(x2) else x1  # av, audio-only feature
+    if len(x1) and len(x2):
+        feats = torch.cat([x1, x2], dim=2)
+    else:
+        feats = x2 if len(x2) else x1
 
-    T = feats.shape[1]  # temporal
+    _, T, em = feats.shape  # temporal
 
-    feats_max = F.max_pool1d(feats.permute(0, 2, 1), T).permute(0, 2, 1) # max pooling
-    feats_avg = F.avg_pool1d(feats.permute(0, 2, 1), T).permute(0, 2, 1) # avg pooling
-    featmax = torch.cat([feats_max, F.dropout(feats_max, 0.1), F.dropout(feats_max, 0.3), F.dropout(feats_max, 0.5),
-                         F.dropout(feats_max, 0.7)], dim=1)
-    featavg = torch.cat([feats_avg, F.dropout(feats_avg, 0.1), F.dropout(feats_avg, 0.3), F.dropout(feats_avg, 0.5),
-                         F.dropout(feats_avg, 0.7)], dim=1)
-    feats = torch.cat([featmax, featavg], dim=1)
+    # drop out as augmentation
+    # feats_max = F.max_pool1d(feats.permute(0, 2, 1), T).permute(0, 2, 1) # max pooling
+    # feats_avg = F.avg_pool1d(feats.permute(0, 2, 1), T).permute(0, 2, 1) # avg pooling
+    # featmax = torch.cat([feats_max, F.dropout(feats_max, 0.1), F.dropout(feats_max, 0.3), F.dropout(feats_max, 0.5),
+    #                      F.dropout(feats_max, 0.7)], dim=1)
+    # featavg = torch.cat([feats_avg, F.dropout(feats_avg, 0.1), F.dropout(feats_avg, 0.3), F.dropout(feats_avg, 0.5),
+    #                      F.dropout(feats_avg, 0.7)], dim=1)
+    # feats = torch.cat([featmax, featavg], dim=1)
 
+    # cut-off as augmentation
+    Clen = round(em * 0.1)  # cut-off length
+    cut = torch.randint(0, em - Clen, (1,))
+    feats[:, :, cut:cut + Clen] = 0.0
 
     # compute loss
     labels = bin2dec(target, target.shape[-1]) # creat label

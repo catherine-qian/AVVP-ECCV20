@@ -80,6 +80,41 @@ class HANLayer(nn.Module):
         return src_q.permute(1, 0, 2)
 
 
+
+class crossTransformer(nn.Module):
+
+    def __init__(self):
+        super(crossTransformer, self).__init__()
+
+        self.fc_a = nn.Linear(128, 512)
+        self.fc_v = nn.Linear(2048, 512)
+        self.fc_vst = nn.Linear(512, 512)
+        self.trans1 = nn.Transformer(nhead=8, num_encoder_layers=1)
+        self.norm1 = nn.LayerNorm(512)
+
+        self.trans2 = nn.Transformer(nhead=8, num_encoder_layers=1)
+        self.norm2 = nn.LayerNorm(512)
+
+    def forward(self, audio, visual, visual_st):
+        # audio ([16, 10, 128]), visual ([16, 80, 2048]), visual_st ([16, 10, 512])
+        xa=self.fc_a(audio)  # ([16, 10, 512])
+        xv=self.fc_v(visual) # ([16, 80, 512])
+        xvst=self.fc_vst(visual_st) # map to the same embedding dimension #([16, 10, 512])
+
+        # x1
+        xa_v = self.trans1(src=xv.permute(1, 0, 2), tgt=xa.permute(1, 0, 2)).permute(1, 0, 2)
+        xa_vst = self.trans1(src=xvst.permute(1, 0, 2), tgt=xa.permute(1, 0, 2)).permute(1, 0, 2)
+        x1 = self.norm1(xa + xa_v + xa_vst)
+
+        # x2
+        xv_a = self.trans2(src=xa.permute(1, 0, 2), tgt=xv.permute(1, 0, 2)).permute(1, 0, 2)  # ([16, 80, 512])
+        xv_a = F.max_pool2d(xv_a, (8, 1)).squeeze()  # ([16, 10, 512])
+
+        xvst_a = self.trans2(src=xa, tgt=xvst) # ([16, 10, 512])
+        x2 = self.norm2(F.max_pool2d(xv, (8, 1)) + xvst + xv_a + xvst_a)
+
+        return x1, x2
+
 class MMIL_Net(nn.Module):
 
     def __init__(self):
@@ -99,10 +134,15 @@ class MMIL_Net(nn.Module):
         self.cmt_encoder = Encoder(CMTLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
         self.hat_encoder = Encoder(HANLayer(d_model=512, nhead=1, dim_feedforward=512), num_layers=1)
 
+        self.crosstransformer=crossTransformer()
+
     def forward(self, audio, visual, visual_st):
         # audio ([16, 10, 128]), visual ([16, 80, 2048]), visual_st ([16, 10, 512])
         # visual: spatial feature extracted by ResNet152 from 80 frames -> 80x2048
         # visual_st: spatio-temporal feature extracted by R2Plus1D from 10 8-frame clips -> 10x512
+
+        # x1, x2 = self.crosstransformer(audio, visual, visual_st)
+
 
         x1 = self.fc_a(audio) # audio feature ([16, 10, 512])
 
@@ -114,7 +154,8 @@ class MMIL_Net(nn.Module):
         x2 = self.fc_fusion(x2)  # visual feature ([16, 10, 512])
 
         # HAN
-        x1, x2 = self.hat_encoder(x1, x2)
+        x1, x2 = self.hat_encoder(x1, x2) # x1-audio, x2-video
+
 
         # prediction
         x = torch.cat([x1.unsqueeze(-2), x2.unsqueeze(-2)], dim=-2) # ([16, 10, 2, 512]) audio-visual aggregated features
@@ -148,6 +189,8 @@ class CMTLayer(nn.Module):
         self.dropout2 = nn.Dropout(dropout)
 
         self.activation = nn.ReLU()
+
+
 
     def forward(self, src_q, src_v, src_mask=None, src_key_padding_mask=None):
         r"""Pass the input through the encoder layer.
