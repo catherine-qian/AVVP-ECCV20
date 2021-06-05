@@ -13,7 +13,7 @@ from nets.losses import *
 from utils.display import *
 import sys
 import datetime
-
+import matplotlib.pyplot as plt
 
 def train(args, model, train_loader, optimizer, criterion, epoch, criterion2=None):
     model.train()
